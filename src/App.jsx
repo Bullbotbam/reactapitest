@@ -17,12 +17,28 @@ function App() {
 		);
 		const dataJ = await data.json();
 		const result = dataJ.results;
+		console.log(img);
 		console.log(result);
 		setRes(result);
 	};
 	useEffect(() => {
 		fetchRequest();
 	}, []);
+
+	useEffect(() => {
+		const listener = event => {
+		  if (event.code === "Enter" || event.code === "NumpadEnter") {
+			console.log("Enter key was pressed. Run your function.");
+			event.preventDefault();
+			// callMyFunction();
+			Submit();
+		  }
+		};
+		document.addEventListener("keydown", listener);
+		return () => {
+		  document.removeEventListener("keydown", listener);
+		};
+	  }, []);
 
 	return (
 		<div className="App container-fluid">
@@ -32,7 +48,7 @@ function App() {
 						return (
 							<>
 								<img
-									key={id}
+									key={val.id}
 									className="col-3 img-fluid img-thumbnail"
 									src={val.urls.small}
 									alt="val.alt_description"
@@ -50,12 +66,15 @@ function App() {
 					<input
 						className="col-3 form-control-sm py-1 fs-4 text-capitalize border border-3 border-dark"
 						type="text"
-						onClick={Submit}
 						onChange={(e) => setImg(e.target.value)}
 						value={img}
 						placeholder="Search Anything..."
 					/>
-					<button type="submit" className="btn bg-dark text-white fs-3 mx-3">
+					<button
+						type="submit"
+						onClick={Submit}
+						className="btn bg-dark text-white fs-3 mx-3"
+					>
 						Search
 					</button>
 				</div>
